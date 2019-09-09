@@ -97,7 +97,14 @@ class Session:
         else:
             options.update(json=data)
 
-        return await self.session.request(method, url, **options)
+        try:
+            resp = await self.session.request(method, url, **options)
+            if resp.status >= 300:
+                raise ValueError("[%s] %s" % (resp.status, await resp.text()))
+            return await resp.json(), resp
+        except Exception as e:
+            self.emit("error", e)
+            return e
 
 
 class EventStream(AsyncIOEventEmitter):
