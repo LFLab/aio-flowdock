@@ -12,7 +12,7 @@ __all__ = ["EventStream"]
 
 
 class EventStream(AsyncIOEventEmitter):
-    def __init__(self, auth, flows, url=None, session=None, loop=None, params=None):
+    def __init__(self, auth, flows, url=None, session=None, params=None, loop=None):
         super().__init__(loop or asyncio.get_event_loop())
         self._evt = None
         self.auth = auth
@@ -25,7 +25,7 @@ class EventStream(AsyncIOEventEmitter):
         if self._evt is not None:
             return
         self._evt = EventSource(self.url, session=self.session,
-                                on_open=partial(self.emit, 'connected', self),
+                                on_open=partial(self.emit, 'connected'),
                                 on_error=partial(self.emit, 'error'),
                                 **self._options())
         retry = 0 if retry < 0 else retry
