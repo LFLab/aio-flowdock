@@ -1,7 +1,9 @@
 from os import environ
 from base64 import b64encode
+from asyncio import get_event_loop
 
 from aiohttp import ClientSession
+from pyee import AsyncIOEventEmitter
 
 from .stream import EventStream
 
@@ -9,8 +11,9 @@ DEFAULT_URL = "https://api.flowdock.com"
 __all__ = ["Session"]
 
 
-class Session:
-    def __init__(self, email, password="", url="", session=None):
+class Session(AsyncIOEventEmitter):
+    def __init__(self, email, password="", url="", session=None, loop=None):
+        super().__init__(loop or get_event_loop())
         self.email = email
         self.password = password
         self.session = session or ClientSession()
