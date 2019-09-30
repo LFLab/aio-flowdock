@@ -25,6 +25,7 @@ class EventStream(AsyncIOEventEmitter):
         if self._evt is not None:
             return
         self._evt = EventSource(self.url, session=self.session,
+                                timeout=-1,
                                 on_open=partial(self.emit, 'connected'),
                                 on_error=partial(self.emit, 'error'),
                                 **self._options())
