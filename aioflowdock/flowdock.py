@@ -40,7 +40,8 @@ class Session(AsyncIOEventEmitter):
 
     async def thread_message(self, flow_id, thread_id, msg, tags=None):
         tags = tags or list()
-        data = dict(flow_id, thread_id, event='message', content=msg, tags=tags)
+        data = dict(flow=flow_id, thread_id=thread_id, event='message',
+                    content=msg, tags=tags)
         return await self.send("/messages", data)
 
     async def comment(self, flow_id, parent_id, comment, tags=None):
