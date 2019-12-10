@@ -16,10 +16,16 @@ class Session(AsyncIOEventEmitter):
         super().__init__(loop or get_event_loop())
         self.email = email
         self.password = password
-        self.session = session or ClientSession()
+        self._session = session
         self.url = url or environ.get("FLOWDOCK_API_URL", DEFAULT_URL)
         secret = ("%s:%s" % (email, password)).encode()
         self.auth = "Basic " + b64encode(secret).decode()
+        
+    @property
+    def session(self):
+        if self._session is None:
+            self._session = ClientSession()
+        return self._session
 
     def stream(self, flows, options=None):
         options = options or dict()
