@@ -3,7 +3,7 @@ aiohttp-sse-client==0.1.6
 async-timeout==3.0.1
 attrs==19.1.0
 chardet==3.0.4
-idna==2.8
+idna==3.7
 idna-ssl==1.1.0
 multidict==4.5.2
 pyee==6.0.0
